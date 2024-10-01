@@ -20,6 +20,57 @@ class LeastResourceSchedulingStrategy(SchedulingStrategy):
         return max(candidate_nodes, key=lambda n: (n.cpu_capacity, n.mem_capacity, n.band_capacity))
 
 
+class DelayAwareSchedulingStrategy(SchedulingStrategy):
+    def select_node(self, pod, candidate_nodes):
+        alpha = 0.1
+        zeta_i = 0
+        lambda_threshold = 114514
+        delays = {}
+
+        def calculate_delay_processing(u, p, n):
+            dp = 0.0
+            return dp
+
+        def calculate_delay_network(u, p, n):
+            dn = 0.0
+            return dn
+
+        # 计算每个节点的延迟
+        for ni in candidate_nodes:
+            # 计算传播延迟和网络延迟
+            Dp = calculate_delay_processing(uk, pj, ni)
+            Dn = calculate_delay_network(uk, pj, ni, preferred_node)
+
+            # 计算综合延迟 a_i,j
+            a_i_j = alpha * Dp + (1 - alpha) * Dn
+
+            # 如果 ζi > 0 ，添加 bias
+            if zeta_i > 0:
+                a_i_j += bias
+
+            # 保存延迟结果
+            delays[ni] = a_i_j
+
+        # 选择最小延迟的节点
+        n_ref = min(delays, key=delays.get)
+        node_selected = [n_ref]
+
+        # 计算 n_ref 的平均延迟
+        a_ref = delays[node_selected]
+
+        # 检查其他节点的延迟是否在阈值范围内
+        for ni in candidate_nodes:
+            if ni != n_ref and delays[ni] <= a_ref + lambda_threshold:
+                node_selected.append(ni)
+
+        # 如果多个节点在选集 N_SEL 中，选择具有最大 min(rCPU, rMEM) 的节点
+        if len(node_selected) > 1:
+            return max(node_selected, key=lambda ni: min(ni.rCPU, ni.rMEM))
+
+        # 如果只有一个节点，直接返回 n_ref
+        return n_ref
+
+
 class Pod:
     def __init__(self, name, cpu_resource, mem_resource, band_resource, setup_time):
         self.name = name  # Pod 名称
@@ -156,8 +207,8 @@ class Scheduler:
         candidate_nodes = [
             n for n in self.node_list
             if pod.cpu_resource <= n.cpu_capacity and
-            pod.mem_resource <= n.mem_capacity and
-            pod.band_resource <= n.band_capacity
+               pod.mem_resource <= n.mem_capacity and
+               pod.band_resource <= n.band_capacity
         ]
 
         if not candidate_nodes:
@@ -262,7 +313,7 @@ if __name__ == '__main__':
     # 输出每个节点的剩余资源
     for node in node_list:
         print(
-        f"初始节点 {node.name} 的剩余资源: CPU: {node.cpu_capacity} vCPUs, 内存: {node.mem_capacity} MB, 带宽: {node.band_capacity} Mbps")
+            f"初始节点 {node.name} 的剩余资源: CPU: {node.cpu_capacity} vCPUs, 内存: {node.mem_capacity} MB, 带宽: {node.band_capacity} Mbps")
 
     # 创建 Pods
     pod_a = Pod(name="Pod-A", cpu_resource=2, mem_resource=2048, band_resource=200, setup_time=30)

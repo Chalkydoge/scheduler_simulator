@@ -1,0 +1,34 @@
+nodes:
+  - name: "Node_1"
+    cpu_capacity: 16
+    mem_capacity: 32000
+    band_capacity: 1000
+  - name: "Node_2"
+    cpu_capacity: 8
+    mem_capacity: 16000
+    band_capacity: 500
+
+rtt_table:
+  Node_1:
+    Node_1: 0
+    Node_2: 10
+  Node_2:
+    Node_1: 10
+    Node_2: 0
+
+pods:
+  - name: "Pod_A"
+    cpu_resource: 2
+    mem_resource: 2048
+    band_resource: 200
+    setup_time: 30
+  - name: "Pod_B"
+    cpu_resource: 2
+    mem_resource: 2048
+    band_resource: 200
+    setup_time: 50
+
+dependencies:
+  Pod_B: ["Pod_A"]
+
+strategy: "RandomSchedulingStrategy"

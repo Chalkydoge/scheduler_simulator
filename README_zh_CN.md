@@ -37,7 +37,7 @@
 2. **运行主程序**:
    - 进入项目目录，并执行以下命令运行程序：
      ```bash
-     python main.py
+     python schedule.py
      ```
 
 3. **更改调度策略**:

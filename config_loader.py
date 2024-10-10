@@ -51,6 +51,17 @@ class ConfigLoader:
         else:
             raise ValueError(f"未知的调度策略: {strategy}")
 
+    def assign_strategy(self, strategy_name):
+        """根据外部指定的strategy来显式的选择运行的策略"""
+        if strategy_name == "RandomSchedulingStrategy":
+            return RandomSchedulingStrategy()
+        elif strategy_name == "LeastResourceSchedulingStrategy":
+            return LeastResourceSchedulingStrategy()
+        elif strategy_name == "DelayAwareSchedulingStrategy":
+            return DelayAwareSchedulingStrategy()
+        else:
+            raise ValueError(f"未知的调度策略: {strategy_name}")
+
     def create_workload(self, pods, dependencies):
         """根据配置文件创建用户工作负载"""
         workload = UserWorkload(

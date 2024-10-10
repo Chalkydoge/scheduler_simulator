@@ -37,7 +37,7 @@ The project is divided into the following main components:
 2. **Run the Main Program**:
    - To run the program, navigate to the project directory and execute the following command:
      ```bash
-     python main.py
+     python schedule.py
      ```
 
 3. **Change Scheduling Strategy**:

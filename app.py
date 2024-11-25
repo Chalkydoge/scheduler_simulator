@@ -34,6 +34,17 @@ def graph_to_json(G):
     return {"nodes": nodes, "edges": edges}
 
 
+def scheduled_result_graph_to_json(G, scheduled_mappings):
+    """
+    :param G:
+    :param scheduled_mappings: CNF的某个NF放在某个节点上 (pod_name, node_name) 的一个mapping
+    :return:
+    """
+    nodes = [{"id": node} for node in G.nodes()]
+    edges = [{"source": u, "target": v, "weight": G[u][v]['weight']} for u, v in G.edges()]
+    return {"nodes": nodes, "edges": edges}
+
+
 @app.route('/')
 def index():
     return render_template("index.html")

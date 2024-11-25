@@ -109,3 +109,20 @@ class DelayAwareSchedulingStrategy(SchedulingStrategy):
 
         # 如果只有一个节点，直接返回 n_ref
         return n_ref
+
+
+class QoEAwareSchedulingStrategy(SchedulingStrategy):
+    def select_node(self, pod, candidate_nodes, **kwargs):
+        """
+        :param pod:
+        :param candidate_nodes:
+        :param kwargs:
+        :return:
+
+        Rewards are the best 'Quality-of-Experience' of users' apps
+        using CNF-ed network functions (
+
+        Such as:
+        producer -> firewall -> NAT -> IDS -> MemCache -> LB -> traffic_shaper -> receiver
+        圆圈(空心) -> 星星 -> 三角 -> 菱形 -> 五边形 -> 正方形 -> 圆圈(实心)
+        """

@@ -63,12 +63,43 @@ def generate_random_topology(num_nodes=10):
     return topology
 
 
+def generate_cnf_chains():
+    # 定义 Pod 名称和依赖关系顺序
+    pod_sequence = ["Producer", "Firewall", "NAT", "IDS", "Cache", "LB", "Traffic_shaper", "Receiver"]
+
+    pods = []
+    dependencies = {}
+
+    # 生成 pods
+    for i, pod_type in enumerate(pod_sequence):
+        pod_name = f"{pod_type}_1"  # 生成名称如 Producer_1, Firewall_1 等
+        pod = {
+            "name": pod_name,
+            "cpu_resource": random.randint(1, 4),  # 随机 CPU 资源在 1 到 4 之间
+            "mem_resource": random.randint(512, 4096),  # 随机内存资源在 512MB 到 4GB 之间
+            "band_resource": random.randint(100, 500),  # 随机带宽在 100 到 500 之间
+            "setup_time": random.randint(10, 60)  # 随机设置时间在 10 到 60 之间
+        }
+        pods.append(pod)
+
+    # 生成依赖关系
+    for i in range(1, len(pod_sequence)):
+        dependent_pod = f"{pod_sequence[i]}_1"
+        dependencies[pod_sequence[i - 1]] = [f"{dependent_pod}_1"]  # 每个 pod 依赖于前一个 pod
+
+    # 输出 pods 和 dependencies
+    print("Pods:", pods)
+    print("Dependencies:", dependencies)
+
+
 # Print the topology to the console
 # print(yaml.dump(topology, default_flow_style=False))
 if __name__ == '__main__':
     # Generate the random topology
-    topology = generate_random_topology()
+    # topology = generate_random_topology(10)
+
+    generate_cnf_chains()
 
     # Write to a YAML file
-    with open("data/random_topology.yaml", "w") as file:
-        yaml.dump(topology, file)
+    # with open("data/random_topology.yaml", "w") as file:
+    #     yaml.dump(topology, file)

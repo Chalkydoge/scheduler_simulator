@@ -175,3 +175,9 @@ class Scheduler:
         # 最终的期望响应时间是 dp 表中的最大值
         max_response_time = max(dp.values())
         return max_response_time
+
+
+    """
+        workload generator -> firewall -> NAT -> IDS -> cache -> Load balancer ->  receiver
+        圆圈(空心) -> 星星 -> 三角 -> 菱形 -> 五边形 -> 正方形 -> 圆圈(实心)
+    """

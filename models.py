@@ -2,13 +2,21 @@ from collections import defaultdict, deque
 
 
 class Pod:
-    def __init__(self, name, cpu_resource, mem_resource, band_resource, setup_time):
+    def __init__(self, name, cpu_resource, mem_resource, band_resource, setup_time, cnf_type=None):
+        valid_cnf_types = ["Traffic Monitor", "Firewall", "NAT", "Load Balancer", "Cache",
+                           "Intrusion Detection", "Video Transcoder", "WAN Optimizer", "Mqtt Broker"]
+
+        if cnf_type is not None and cnf_type not in valid_cnf_types:
+            raise ValueError(f"Invalid cnf_type. Expected one of {valid_cnf_types}")
+
+        self.cnf_type = cnf_type
         self.name = name  # Pod 名称
         self.cpu_resource = cpu_resource  # CPU 需求(mCPU)
         self.mem_resource = mem_resource  # 内存需求（MB)
         self.band_resource = band_resource  # 带宽需求(Mbps)
-        self.setup_time = setup_time  # 启动时间，单位是秒(average seconds)
-        self.scheduled = False  # Pod 是否已经被调度
+        self.setup_time = setup_time    # 启动时间，单位是秒(average seconds)
+        self.cnf_type = cnf_type        # CNF 类型
+        self.scheduled = False          # Pod 是否已经被调度
 
     def start_pod(self):
         print(f"Pod {self.name} 启动中，预计启动时间为 {self.setup_time} 秒...")
@@ -33,11 +41,13 @@ class Pod:
 
 
 class UserWorkload:
+
     def __init__(self, name, num_pods, pod_list, work_dependencies):
         self.name = name  # 用户工作负载的名称（应用程序名称）
         self.num_pods = num_pods  # 该工作负载运行的 Pod 数量
         self.pods = pod_list  # 存放所有 Pod 的列表
         self.dependencies = work_dependencies  # Pod 的依赖关系
+        # 响应User工作负载的 CNF类型 只需要放在Pod上面就行
 
     # 构建依赖图，并进行拓扑排序
     def resolve_dependencies(self):
@@ -87,3 +97,61 @@ class Node:
         self.band_capacity -= pod.band_resource
         print(f"Pod {pod.name} 成功调度到节点 {self.name}")
 
+    # 模拟资源竞争导致的延迟
+    # 改进为 根据Pod的类型 产生数据处理的延迟 data_processing_delay, 以及 deployment_delay
+    # cpu/band的delay本身就有 不属于额外的贡献
+    def resource_contention_delay(self, alpha: float, beta: float, enable_drop=False, enable_jitter=False):
+        """
+        根据目前节点上已经存在的CNF pod的关系 {cnf1: num1, cnf2: num2, ...}
+        计算将cnf_new 放入带来的延迟大小 data_processing_delay, deployment_delay
+
+        :param alpha:
+        :param beta:
+        :param enable_drop:
+        :param enable_jitter:
+        :return:
+        """
+
+
+        # 计算 CPU 竞争引发的延迟
+        total_cpu_usage = sum(pod.cpu_resource for pod in self.pods)
+        total_band_usage = sum(pod.band_resource for pod in self.pods)
+
+        # CPU 超负荷的情况下增加处理延迟 (按 alpha 系数)
+        cpu_delay = 0
+        if total_cpu_usage > self.cpu_capacity:
+            cpu_overload = total_cpu_usage - self.cpu_capacity
+            cpu_delay = alpha * cpu_overload  # 按比例增加的 CPU 处理延迟
+
+        # 带宽竞争导致的传输延迟 (按 beta 系数)
+        band_delay = 0
+        if total_band_usage > self.band_capacity:
+            band_overload = total_band_usage - self.band_capacity
+            band_delay = beta * band_overload  # 按比例增加的网络传输延迟
+
+        # 计算丢包率 (可选)
+        drop_rate = 0
+        if enable_drop and total_band_usage > self.band_capacity:
+            drop_rate = (total_band_usage - self.band_capacity) / total_band_usage  # 丢包率
+
+        # 计算抖动 (可选)
+        jitter = 0
+        if enable_jitter:
+            jitter = band_delay * 0.1  # 假设抖动为延迟的 10%
+
+        # 打印结果
+        print(f"资源竞争导致的 CPU 延迟: {cpu_delay:.2f} ms")
+        print(f"资源竞争导致的网络延迟: {band_delay:.2f} ms")
+        if enable_drop:
+            print(f"丢包率: {drop_rate:.2%}")
+        if enable_jitter:
+            print(f"网络抖动: {jitter:.2f} ms")
+
+
+
+        return {
+            "cpu_delay": cpu_delay,
+            "band_delay": band_delay,
+            "drop_rate": drop_rate if enable_drop else None,
+            "jitter": jitter if enable_jitter else None
+        }

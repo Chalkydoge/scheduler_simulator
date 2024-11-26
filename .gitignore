@@ -1,3 +1,8 @@
 .idea
 .venv
 __pycache__/
+# 忽略所有的 PNG 图片文件
+*.png
+
+# 忽略所有的 JPG 图片文件
+*.jpg

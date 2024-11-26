@@ -4,6 +4,7 @@ import pandas as pd
 import seaborn as sns
 from matplotlib.ticker import MaxNLocator
 
+
 def load_csv():
     # 读取 CSV 文件
     df = pd.read_csv('./data/cnf_update.csv')  # 替换为你的 CSV 文件路径

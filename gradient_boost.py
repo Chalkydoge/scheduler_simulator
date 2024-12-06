@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor
@@ -7,137 +8,122 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import seaborn as sns
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+import joblib
 
 
-def data_process():
-    # 1. 数据加载
-    # 假设 CSV 数据文件路径为 "data.csv"
-    data = pd.read_csv('./data/cnf_update.csv')
-    print(data.head())
+class DataProcessor:
+    def __init__(self, filepath):
+        self.filepath = filepath
 
-    # 过滤掉 replica_num == 0 的数据
-    filtered_data = data[data['replica_num'] != 0]
+    def load_and_process_data(self):
+        # 1. 数据加载
+        data = pd.read_csv(self.filepath)
+        print(data.head())
 
-    # 检查 transfer 列的描述性统计
-    print(filtered_data['transfer'].describe())
+        # 过滤掉 replica_num == 0 的数据
+        filtered_data = data[data['replica_num'] != 0]
 
-    # 2. 数据预处理
-    # 假设 X = [miss, cache_ref, instruction, ipc]， Y = [transfer, bitrate]
-    X = data[['miss', 'cache_ref', 'instruction', 'ipc']]
-    Y = data[['transfer', 'bitrate']]
+        # 检查 transfer 列的描述性统计
+        print(filtered_data['transfer'].describe())
 
-    # 处理缺失值
-    imputer = SimpleImputer(strategy='mean')  # 使用均值填补缺失值
-    X_imputed = imputer.fit_transform(X)
-    Y_imputed = imputer.fit_transform(Y)
+        # 2. 数据预处理
+        X = data[['miss', 'cache_ref', 'instruction', 'ipc']]
+        Y = data[['transfer', 'bitrate']]
 
-    # 如果需要对数据进行标准化，可以使用 StandardScaler
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X_imputed)
-    return X_scaled, Y_imputed
+        # 处理缺失值
+        _imp = SimpleImputer(strategy='mean')
+        x_imputed = _imp.fit_transform(X)
+        y_imputed = _imp.fit_transform(Y)
 
-
-def gb_model():
-    X_scaled, Y_imputed = data_process()
-
-    # 3. 数据集划分：80%训练集，20%测试集
-    X_train, X_test, Y_train, Y_test = train_test_split(X_scaled, Y_imputed, test_size=0.2, random_state=42)
-
-    # 训练模型：针对 transfer 目标
-    model_transfer = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
-    model_transfer.fit(X_train, Y_train[:, 0])  # 只使用 transfer 列作为目标
-
-    # 训练模型：针对 bitrate 目标
-    model_bitrate = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
-    model_bitrate.fit(X_train, Y_train[:, 1])  # 只使用 bitrate 列作为目标
-
-    # 预测
-    Y_pred_transfer = model_transfer.predict(X_test)
-    Y_pred_bitrate = model_bitrate.predict(X_test)
-
-    # 评估模型：均方误差
-    mse_transfer = mean_squared_error(Y_test[:, 0], Y_pred_transfer)
-    mse_bitrate = mean_squared_error(Y_test[:, 1], Y_pred_bitrate)
-    print(f'MSE for transfer: {mse_transfer}')
-    print(f'MSE for bitrate: {mse_bitrate}')
-
-    return model_transfer, model_bitrate
+        # 标准化
+        scaler = StandardScaler()
+        x_scaled = scaler.fit_transform(x_imputed)
+        return x_scaled, y_imputed
 
 
-def predict_plot(model_transfer, model_bitrate, x, y):
-    # 预测
-    Y_pred_transfer = model_transfer.predict(x)
-    Y_pred_bitrate = model_bitrate.predict(x)
+class GradientBoostModel:
+    def __init__(self):
+        self.model_transfer = GradientBoostingRegressor(n_estimators=150, learning_rate=0.1, max_depth=3,
+                                                        random_state=42)
+        self.model_bitrate = GradientBoostingRegressor(n_estimators=150, learning_rate=0.1, max_depth=3,
+                                                       random_state=42)
+        self.model_transfer_path = 'model_transfer.joblib'
+        self.model_bitrate_path = 'model_bitrate.joblib'
 
-    # 可视化：转移率 (transfer) 对比预测值和实际值
+    def train(self, x_train, y_train):
+        # y_train的第一个维度对应于传输率
+        self.model_transfer.fit(x_train, y_train[:, 0])
+        # 第二个维度对应于比特率
+        self.model_bitrate.fit(x_train, y_train[:, 1])
+
+    def save_model(self, filepath_transfer, filepath_bitrate):
+        joblib.dump(self.model_transfer, filepath_transfer)
+        joblib.dump(self.model_bitrate, filepath_bitrate)
+        print(f"Models saved to {filepath_transfer} and {filepath_bitrate}")
+
+    def load_model(self, filepath_transfer, filepath_bitrate):
+        self.model_transfer = joblib.load(filepath_transfer)
+        self.model_bitrate = joblib.load(filepath_bitrate)
+        print(f"Models loaded from {filepath_transfer} and {filepath_bitrate}")
+
+    def predict(self, x):
+        y_pred_transfer = self.model_transfer.predict(x)
+        y_pred_bitrate = self.model_bitrate.predict(x)
+        return y_pred_transfer, y_pred_bitrate
+
+
+def predict_plot(model_transfer, model_bitrate, X, Y):
+    Y_pred_transfer, Y_pred_bitrate = model_transfer.predict(X), model_bitrate.predict(X)
+
     plt.figure(figsize=(10, 6))
 
-    # 转移率对比
     plt.subplot(1, 2, 1)
-    sns.scatterplot(x=y[:, 0], y=Y_pred_transfer, color='blue')
-    plt.plot([y[:, 0].min(), y[:, 0].max()], [y[:, 0].min(), y[:, 0].max()], 'r--', lw=2)
+    sns.scatterplot(x=Y[:, 0], y=Y_pred_transfer, color='blue')
+    plt.plot([Y[:, 0].min(), Y[:, 0].max()], [Y[:, 0].min(), Y[:, 0].max()], 'r--', lw=2)
     plt.title('Transfer Rate: Predicted vs Actual')
     plt.xlabel('Actual Transfer Rate')
     plt.ylabel('Predicted Transfer Rate')
 
-    # 比特率 (bitrate) 对比
     plt.subplot(1, 2, 2)
-    sns.scatterplot(x=y[:, 1], y=Y_pred_bitrate, color='green')
-    plt.plot([y[:, 1].min(), y[:, 1].max()], [y[:, 1].min(), y[:, 1].max()], 'r--', lw=2)
+    sns.scatterplot(x=Y[:, 1], y=Y_pred_bitrate, color='green')
+    plt.plot([Y[:, 1].min(), Y[:, 1].max()], [Y[:, 1].min(), Y[:, 1].max()], 'r--', lw=2)
     plt.title('Bitrate: Predicted vs Actual')
     plt.xlabel('Actual Bitrate')
     plt.ylabel('Predicted Bitrate')
 
     plt.tight_layout()
-    plt.savefig('sample_model1.png')
+    plt.savefig('gb1.png')
 
 
 def y_compare(ytest, ypred):
     data = pd.read_csv('./data/cnf_update.csv')
-    # 假设 replica_num 是数据中的一个列，可以直接取
-    # 如果没有这个列，可以通过 `range(len(Y_test))` 来模拟
-    replica_num = data['replica_num']  # 假设数据中有这列
-
-    # 跳过 replica_num=0 的数据点
-    mask = replica_num != 0  # 过滤掉 replica_num=0 的数据
+    replica_num = data['replica_num']
+    mask = replica_num != 0
     filtered_replica_num = replica_num[mask]
-    filtered_actual_transfer = ytest[mask, 0]  # 实际的 transfer
-    filtered_predicted_transfer = ypred[mask]  # 预测的 transfer
+    # 这两个长度是一样的
+    filtered_actual_transfer = ytest[:, 0]
+    filtered_predicted_transfer = ypred
 
-    # 创建一个大的图形
     fig, ax = plt.subplots(figsize=(10, 6))
-
-    # 绘制主图：x 轴为 replica_num，y 轴为 transfer
     ax.plot(filtered_replica_num, filtered_actual_transfer, label='Actual Transfer', color='blue', marker='o',
             linestyle='-', markersize=4)
     ax.plot(filtered_replica_num, filtered_predicted_transfer, label='Predicted Transfer', color='red', linestyle='--',
             marker='x', markersize=4)
-
-    # 添加标题和标签
     ax.set_title('Transfer Rate: Actual vs Predicted by Replica Number (Excluding replica_num=0)')
     ax.set_xlabel('Replica Number')
     ax.set_ylabel('Transfer Rate')
-
-    # 显示图例
     ax.legend()
 
-    # 放大 0-20 区域
-    axins = inset_axes(ax, width="30%", height="30%", loc='upper left', borderpad=2)  # 创建一个放大区域
-
-    # 在放大区域绘制相同的内容，只选取 0 到 20 之间的数据
+    axins = inset_axes(ax, width="30%", height="30%", loc='upper left', borderpad=2)
     axins.plot(filtered_replica_num, filtered_actual_transfer, label='Actual Transfer', color='blue', marker='o',
                linestyle='-', markersize=4)
     axins.plot(filtered_replica_num, filtered_predicted_transfer, label='Predicted Transfer', color='red',
                linestyle='--', marker='x', markersize=4)
-
-    # 设置放大区域的 x 和 y 轴范围
     axins.set_xlim(0, 20)
     axins.set_ylim(min(filtered_actual_transfer[filtered_replica_num <= 20].min(),
                        filtered_predicted_transfer[filtered_replica_num <= 20].min()) - 0.1,
                    max(filtered_actual_transfer[filtered_replica_num <= 20].max(),
                        filtered_predicted_transfer[filtered_replica_num <= 20].max()) + 0.1)
-
-    # 添加放大区域的边框
     axins.set_xticks([0, 5, 10, 15, 20])
     axins.set_yticks([min(filtered_actual_transfer[filtered_replica_num <= 20].min(),
                           filtered_predicted_transfer[filtered_replica_num <= 20].min()) - 0.1,
@@ -147,19 +133,44 @@ def y_compare(ytest, ypred):
                            filtered_predicted_transfer[filtered_replica_num <= 20].min())) / 2,
                       max(filtered_actual_transfer[filtered_replica_num <= 20].max(),
                           filtered_predicted_transfer[filtered_replica_num <= 20].max()) + 0.1])
-
-    # 在主图中绘制放大区域的框架
     ax.indicate_inset_zoom(axins)
-
-    # 保存图像到文件，dpi=300
     plt.savefig('transfer_rate_comparison_zoomed_no_0.png', dpi=300)
-
-    # 显示图像
     plt.show()
 
 
+def calculate_degradation(ypred):
+    # 获取 replica_num=1 的基准 transfer 值
+    data = pd.read_csv('./data/cnf_update.csv')
+    replica_num = data['replica_num']
+    df = data[replica_num == 1]
+    baseline_transfer = (df['transfer'].mean())
+    print(f"Baseline transfer value for replica_num=1: {baseline_transfer}")
+
+    # 计算每个 replica_num 的 transfer 相对于基准值的比值
+    degradation_ratios = ypred / 6.496 # baseline_transfer
+    return degradation_ratios
+
+
 if __name__ == '__main__':
-    x, y = data_process()
-    m1, m2 = gb_model()
-    predict_plot(m1, m2, x, y)
-    y_compare(ytest=y, ypred=m1.predict(x))
+    data_processor = DataProcessor('./data/cnf_update.csv')
+    X, Y = data_processor.load_and_process_data()
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=42)
+
+    gb_model = GradientBoostModel()
+    if os.path.exists(model_transfer_path) and os.path.exists(model_bitrate_path):
+        gb_model.load_model(model_transfer_path, model_bitrate_path)
+    else:
+        gb_model.train(X_train, Y_train)
+        gb_model.save_model(model_transfer_path, model_bitrate_path)
+        gb_model.load_model('model_transfer.joblib', 'model_bitrate.joblib')
+
+    Y_pred_transfer, Y_pred_bitrate = gb_model.predict(X_test)
+    mse_transfer = mean_squared_error(Y_test[:, 0], Y_pred_transfer)
+    mse_bitrate = mean_squared_error(Y_test[:, 1], Y_pred_bitrate)
+    print(f'MSE for transfer: {mse_transfer}')
+    print(f'MSE for bitrate: {mse_bitrate}')
+
+    predict_plot(gb_model.model_transfer, gb_model.model_bitrate, X_test, Y_test)
+    y_compare(Y, gb_model.model_transfer.predict(X))
+
+    print(calculate_degradation(3.33))

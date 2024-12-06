@@ -1,4 +1,5 @@
 from collections import defaultdict, deque
+import numpy as np
 
 
 class Pod:
@@ -9,7 +10,6 @@ class Pod:
         if cnf_type is not None and cnf_type not in valid_cnf_types:
             raise ValueError(f"Invalid cnf_type. Expected one of {valid_cnf_types}")
 
-        self.cnf_type = cnf_type
         self.name = name  # Pod 名称
         self.cpu_resource = cpu_resource  # CPU 需求(mCPU)
         self.mem_resource = mem_resource  # 内存需求（MB)
@@ -41,7 +41,9 @@ class Pod:
 
 
 class UserWorkload:
-
+    """
+        CNF调度问题的用户工作负载
+    """
     def __init__(self, name, num_pods, pod_list, work_dependencies):
         self.name = name  # 用户工作负载的名称（应用程序名称）
         self.num_pods = num_pods  # 该工作负载运行的 Pod 数量
@@ -155,3 +157,37 @@ class Node:
             "drop_rate": drop_rate if enable_drop else None,
             "jitter": jitter if enable_jitter else None
         }
+
+
+class PodAggregator:
+    """
+        输入=pod
+        benchmark={miss_incr, cache_ref_incr, instr_incr, ipc_basis, replica_num}
+        basis = {8359856.1, 39975530.8, 1776892396, 0.0, 0}
+    """
+    def __init__(self, pods):
+        self.pods = pods
+        # basic noise on the worker node looks like:
+        self.basis = [8359856.1, 39975530.8, 1776892396, 0.0, 0]
+        # addition of these
+        self.benchmark = {
+            "Traffic Monitor": [529985.71, 2404326.7, 271203379, 0.0, 1],
+            "Firewall": [529985.71, 2404326.7, 271203379, 0.0, 1],
+            "NAT": [529985.71, 2404326.7, 271203379, 0.0, 1],
+            "Load Balancer": [529985.71, 2404326.7, 271203379, 0.0, 1],
+            "Cache": [529985.71, 2404326.7, 271203379, 0.0, 1],
+            "Intrusion Detection": [529985.71, 2404326.7, 271203379, 0.0, 1],
+            "Video Transcoder": [529985.71, 2404326.7, 271203379, 0.0, 1],
+            "WAN Optimizer": [529985.71, 2404326.7, 271203379, 0.0, 1],
+            "Mqtt Broker": [529985.71, 2404326.7, 271203379, 0.0, 1]
+        }
+
+    """
+        然后输入的workload就会经过这里变成result的一个向量
+    """
+    def aggregate(self):
+        result = np.zeros((1, 5), dtype=int)
+        for pod in self.pods:
+            if pod.cnf_type in self.benchmark:
+                result += np.array(self.benchmark[pod.cnf_type])
+        return result

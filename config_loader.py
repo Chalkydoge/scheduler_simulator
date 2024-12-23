@@ -1,7 +1,8 @@
 import yaml
 from models import Node, Pod, UserWorkload
 from scheduling_strategies import RandomSchedulingStrategy, LeastResourceSchedulingStrategy, \
-    DelayAwareSchedulingStrategy
+    DelayAwareSchedulingStrategy, InterferenceAwareSchedulingStrategy, NetMarksSchedulingStrategy, \
+    IPlaceSchedulingStrategy
 
 
 class ConfigLoader:
@@ -48,6 +49,12 @@ class ConfigLoader:
             return LeastResourceSchedulingStrategy()
         elif strategy == "DelayAwareSchedulingStrategy":
             return DelayAwareSchedulingStrategy()
+        elif strategy == "InterferenceAwareSchedulingStrategy":
+            return InterferenceAwareSchedulingStrategy()
+        elif strategy == "NetMarksSchedulingStrategy":
+            return NetMarksSchedulingStrategy()
+        elif strategy == "IPlaceSchedulingStrategy":
+            return IPlaceSchedulingStrategy()
         else:
             raise ValueError(f"未知的调度策略: {strategy}")
 

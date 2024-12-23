@@ -60,10 +60,9 @@ class SchedulerService:
         self.scheduler.schedule_workload(self.workload)
 
         # 获取调度记录
-        self.scheduler.get_scheduling_record()
-
+        # self.scheduler.get_scheduling_record()
         # 打印集群状态（可选：如果你希望在调用时打印出来）
-        self.scheduler.print_cluster_state()
+        # self.scheduler.print_cluster_state()
 
         # 计算响应时间
         mx_resp = self.scheduler.calculate_response_time(user_workload=self.workload)
@@ -84,11 +83,13 @@ class SchedulerService:
 
 
 if __name__ == '__main__':
-    # 初始化调度服务
-    scheduler_service = SchedulerService('./data/setup1.yaml')
+    for node_size in [2, 3, 5, 7, 10]:
+        for sc in ["RandomSchedulingStrategy", "LeastResourceSchedulingStrategy", "DelayAwareSchedulingStrategy", "InterferenceAwareSchedulingStrategy"]:
+            # 初始化调度服务
+            scheduler_service = SchedulerService('./data/setup{}_{}.yaml'.format(node_size, sc[:5]))
 
-    # 获取调度的指标，不额外指定就根据yaml内的配置进行测试
-    metrics = scheduler_service.print_scheduler_metrics()
+            # 获取调度的指标，不额外指定就根据yaml内的配置进行测试
+            metrics = scheduler_service.print_scheduler_metrics()
 
-    # 输出调度结果
-    print("Sample results: ", metrics)
+            # 输出调度结果
+            print("{} scheduled Sample results: {}s.".format(sc, metrics['response_time'] / 1000.0))

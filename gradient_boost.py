@@ -1,10 +1,10 @@
 import os
+import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import seaborn as sns
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
@@ -21,10 +21,7 @@ class DataProcessor:
         print(data.head())
 
         # 过滤掉 replica_num == 0 的数据
-        filtered_data = data[data['replica_num'] != 0]
-
-        # 检查 transfer 列的描述性统计
-        print(filtered_data['transfer'].describe())
+        # filtered_data = data[data['replica_num'] != 0]
 
         # 2. 数据预处理
         X = data[['miss', 'cache_ref', 'instruction', 'ipc']]
@@ -35,10 +32,10 @@ class DataProcessor:
         x_imputed = _imp.fit_transform(X)
         y_imputed = _imp.fit_transform(Y)
 
-        # 标准化
-        scaler = StandardScaler()
-        x_scaled = scaler.fit_transform(x_imputed)
-        return x_scaled, y_imputed
+        # 标准化 去掉因为后面还需要推理 输入的x是原始数据
+        # scaler = StandardScaler()
+        # x_scaled = scaler.fit_transform(x_imputed)
+        return x_imputed, y_imputed
 
 
 class GradientBoostModel:
@@ -59,12 +56,12 @@ class GradientBoostModel:
     def save_model(self, filepath_transfer, filepath_bitrate):
         joblib.dump(self.model_transfer, filepath_transfer)
         joblib.dump(self.model_bitrate, filepath_bitrate)
-        print(f"Models saved to {filepath_transfer} and {filepath_bitrate}")
+        # print(f"Models saved to {filepath_transfer} and {filepath_bitrate}")
 
     def load_model(self, filepath_transfer, filepath_bitrate):
         self.model_transfer = joblib.load(filepath_transfer)
         self.model_bitrate = joblib.load(filepath_bitrate)
-        print(f"Models loaded from {filepath_transfer} and {filepath_bitrate}")
+        # print(f"Models loaded from {filepath_transfer} and {filepath_bitrate}")
 
     def predict(self, x):
         y_pred_transfer = self.model_transfer.predict(x)
@@ -144,8 +141,6 @@ def calculate_degradation(ypred):
     replica_num = data['replica_num']
     df = data[replica_num == 1]
     baseline_transfer = (df['transfer'].mean())
-    print(f"Baseline transfer value for replica_num=1: {baseline_transfer}")
-
     # 计算每个 replica_num 的 transfer 相对于基准值的比值
     degradation_ratios = ypred / 6.496 # baseline_transfer
     return degradation_ratios
@@ -155,22 +150,23 @@ if __name__ == '__main__':
     data_processor = DataProcessor('./data/cnf_update.csv')
     X, Y = data_processor.load_and_process_data()
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=42)
+    print(X_train[0])
 
     gb_model = GradientBoostModel()
-    if os.path.exists(model_transfer_path) and os.path.exists(model_bitrate_path):
-        gb_model.load_model(model_transfer_path, model_bitrate_path)
+    if os.path.exists(gb_model.model_transfer_path) and os.path.exists(gb_model.model_bitrate_path):
+        gb_model.load_model(gb_model.model_transfer_path, gb_model.model_bitrate_path)
     else:
         gb_model.train(X_train, Y_train)
-        gb_model.save_model(model_transfer_path, model_bitrate_path)
+        gb_model.save_model(gb_model.model_transfer_path, gb_model.model_bitrate_path)
         gb_model.load_model('model_transfer.joblib', 'model_bitrate.joblib')
 
     Y_pred_transfer, Y_pred_bitrate = gb_model.predict(X_test)
     mse_transfer = mean_squared_error(Y_test[:, 0], Y_pred_transfer)
     mse_bitrate = mean_squared_error(Y_test[:, 1], Y_pred_bitrate)
-    print(f'MSE for transfer: {mse_transfer}')
-    print(f'MSE for bitrate: {mse_bitrate}')
 
     predict_plot(gb_model.model_transfer, gb_model.model_bitrate, X_test, Y_test)
     y_compare(Y, gb_model.model_transfer.predict(X))
 
-    print(calculate_degradation(3.33))
+    y = gb_model.model_transfer.predict(np.array([8.35985610e+06, 3.99755308e+07, 1.77689240e+09, 6.00000000e-01]).reshape(1, -1))
+    print(calculate_degradation(y))
+

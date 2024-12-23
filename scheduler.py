@@ -1,6 +1,7 @@
 from collections import deque, defaultdict
 
-from models import UserWorkload, Node, Pod
+from gradient_boost import GradientBoostModel, calculate_degradation
+from models import UserWorkload, Node, Pod, PodAggregator
 from scheduling_strategies import SchedulingStrategy
 
 
@@ -107,7 +108,6 @@ class Scheduler:
         )
 
         selected_node.assign_pod(pod)
-        pod.start_pod()
         self.record[pod.name] = selected_node
         self.assigned_node.append(selected_node.name)
 
@@ -141,6 +141,34 @@ class Scheduler:
         else:
             return float('inf')  # 如果没有找到 RTT，则返回无穷大
 
+    def get_pod_process(self, scheduled_pod: Pod, scheduled_node: Node):
+        """
+                workload generator -> firewall -> NAT -> IDS -> cache -> Load balancer ->  receiver
+                圆圈(空心) -> 星星 -> 三角 -> 菱形 -> 五边形 -> 正方形 -> 圆圈(实心)
+        """
+        volume = scheduled_pod.data_amount
+        R = 1.0 / (scheduled_pod.cpu_resource / scheduled_node.cpu_had)
+
+        # introduce the interference model to solve this
+        gb_model = GradientBoostModel()
+        gb_model.load_model(gb_model.model_transfer_path, gb_model.model_bitrate_path)
+        interference_pods = scheduled_node.pods
+        aggregator = PodAggregator(interference_pods)
+
+        input_x = aggregator.aggregate()
+        # print(input_x, type(input_x))
+        if all(x == 0 for x in input_x):
+            return 0  # 因为什么都没有发生
+        else:
+            y_pred = gb_model.model_transfer.predict(input_x.reshape(1, -1))
+            base = calculate_degradation(y_pred)
+            # 因为单位是Mbps 所以是1024^2 而且是ms为单位
+            transfer_time = (volume * 1024 * 8) / scheduled_node.band_capacity  # 需要处理的数据 / 带宽(M)
+            calculate_time = 16 * volume * R
+            base_latency = transfer_time + calculate_time
+            addition_latency = base_latency * (1.0 / base)  # 因为干扰 导致处理数据能力下降
+            return addition_latency
+
     # 计算完成调度之后user workload的期望response time（根据已有rtt进行估计）
     def calculate_response_time(self, user_workload: UserWorkload):
         g = defaultdict(list)  # 依赖图
@@ -168,16 +196,14 @@ class Scheduler:
                 if ind[nxt] == 0:
                     q.append(nxt)
                 # 只要存在依赖关系的都可能是依赖项 进行dp
-                w = self.get_pod_rtt(_from=cur, _to=nxt)
+
+                # 这里怎么只考虑了来回的传输时间
+                network = self.get_pod_rtt(_from=cur, _to=nxt)
+                data = self.get_pod_process(cur, self.record[cur.name])
+                w = network + data
                 if dp[cur] + w > dp[nxt]:
                     dp[nxt] = dp[cur] + w
 
         # 最终的期望响应时间是 dp 表中的最大值
         max_response_time = max(dp.values())
         return max_response_time
-
-
-    """
-        workload generator -> firewall -> NAT -> IDS -> cache -> Load balancer ->  receiver
-        圆圈(空心) -> 星星 -> 三角 -> 菱形 -> 五边形 -> 正方形 -> 圆圈(实心)
-    """

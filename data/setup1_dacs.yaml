@@ -1,49 +1,38 @@
 nodes:
-  - name: "Node-1"
+  - name: "Node_1"
     cpu_capacity: 16
     mem_capacity: 32000
     band_capacity: 1000
-  - name: "Node-2"
+  - name: "Node_2"
     cpu_capacity: 8
     mem_capacity: 16000
     band_capacity: 500
-  - name: "Node-3"
-    cpu_capacity: 32
-    mem_capacity: 64000
-    band_capacity: 2000
 
 rtt_table:
-  Node-1:
-    Node-1: 0
-    Node-2: 30
-    Node-3: 100
-  Node-2:
-    Node-1: 30
-    Node-2: 0
-    Node-3: 50
-  Node-3:
-    Node-1: 100
-    Node-2: 50
-    Node-3: 0
+  Node_1:
+    Node_1: 0
+    Node_2: 10
+  Node_2:
+    Node_1: 10
+    Node_2: 0
 
 pods:
-  - name: "Pod-A"
+  - name: "Pod_A"
     cpu_resource: 2
     mem_resource: 2048
     band_resource: 200
     setup_time: 30
-  - name: "Pod-B"
+    cnf_type: "Load Balancer"
+    data_amount: 10  # 10G
+  - name: "Pod_B"
     cpu_resource: 2
     mem_resource: 2048
     band_resource: 200
     setup_time: 50
-  - name: "Pod-C"
-    cpu_resource: 4
-    mem_resource: 4096
-    band_resource: 300
-    setup_time: 60
+    cnf_type: "Load Balancer"
+    data_amount: 10  # 10G
 
 dependencies:
-  Pod-C: ["Pod-A", "Pod-B"]
+  Pod_B: ["Pod_A"]
 
 strategy: "DelayAwareSchedulingStrategy"

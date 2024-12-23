@@ -3,9 +3,9 @@ import numpy as np
 
 
 class Pod:
-    def __init__(self, name, cpu_resource, mem_resource, band_resource, setup_time, cnf_type=None):
-        valid_cnf_types = ["Traffic Monitor", "Firewall", "NAT", "Load Balancer", "Cache",
-                           "Intrusion Detection", "Video Transcoder", "WAN Optimizer", "Mqtt Broker"]
+    def __init__(self, name, cpu_resource, mem_resource, band_resource, setup_time, cnf_type=None, data_amount=None):
+        valid_cnf_types = ["Producer", "Traffic Monitor", "Firewall", "NAT", "Load Balancer", "Cache",
+                           "Intrusion Detection", "Video Transcoder", "WAN Optimizer", "Mqtt Broker", "Receiver"]
 
         if cnf_type is not None and cnf_type not in valid_cnf_types:
             raise ValueError(f"Invalid cnf_type. Expected one of {valid_cnf_types}")
@@ -16,6 +16,7 @@ class Pod:
         self.band_resource = band_resource  # 带宽需求(Mbps)
         self.setup_time = setup_time    # 启动时间，单位是秒(average seconds)
         self.cnf_type = cnf_type        # CNF 类型
+        self.data_amount = data_amount   # 处理的数据量
         self.scheduled = False          # Pod 是否已经被调度
 
     def start_pod(self):
@@ -25,19 +26,21 @@ class Pod:
 
     # 实现 __str__ 方法，方便打印 Pod 对象时提供更友好的信息
     def __str__(self):
-        return (f"Pod(name={self.name}, "
-                f"CPU={self.cpu_resource}, "
-                f"Memory={self.mem_resource}, "
-                f"Bandwidth={self.band_resource}, "
-                f"Setup Time={self.setup_time}s)")
+        return (f"Pod(name={self.name}")
+                # f"CPU={self.cpu_resource}, "
+                # f"Memory={self.mem_resource}, "
+                # f"Bandwidth={self.band_resource}, "
+                # f"Setup Time={self.setup_time}s)"
+                # f"Estimated Data={self.data_amount}GB")
 
     # 提供更有用的字符串表示，以便调试和打印时使用
     def __repr__(self):
-        return (f"Pod(name={self.name}, "
-                f"CPU={self.cpu_resource}, "
-                f"Memory={self.mem_resource}, "
-                f"Bandwidth={self.band_resource}, "
-                f"Setup Time={self.setup_time}s)")
+        return (f"Pod(name={self.name}")
+                # f"CPU={self.cpu_resource}, "
+                # f"Memory={self.mem_resource}, "
+                # f"Bandwidth={self.band_resource}, "
+                # f"Setup Time={self.setup_time}s)"
+                # f"Estimated Data={self.data_amount}GB")
 
 
 class UserWorkload:
@@ -90,6 +93,7 @@ class Node:
         self.mem_capacity: int = mem_capacity  # 节点的内存容量
         self.band_capacity: int = band_capacity  # 节点的带宽容量
         self.pods = []  # 节点上运行的 Pods 列表
+        self.cpu_had = self.cpu_capacity  # 节点本来拥有的cpu资源量
 
     # 为节点分配 Pod
     def assign_pod(self, pod):
@@ -97,7 +101,7 @@ class Node:
         self.cpu_capacity -= pod.cpu_resource
         self.mem_capacity -= pod.mem_resource
         self.band_capacity -= pod.band_resource
-        print(f"Pod {pod.name} 成功调度到节点 {self.name}")
+        # print(f"Pod {pod.name} 成功调度到节点 {self.name}")
 
     # 模拟资源竞争导致的延迟
     # 改进为 根据Pod的类型 产生数据处理的延迟 data_processing_delay, 以及 deployment_delay
@@ -113,8 +117,6 @@ class Node:
         :param enable_jitter:
         :return:
         """
-
-
         # 计算 CPU 竞争引发的延迟
         total_cpu_usage = sum(pod.cpu_resource for pod in self.pods)
         total_band_usage = sum(pod.band_resource for pod in self.pods)
@@ -168,25 +170,26 @@ class PodAggregator:
     def __init__(self, pods):
         self.pods = pods
         # basic noise on the worker node looks like:
-        self.basis = [8359856.1, 39975530.8, 1776892396, 0.0, 0]
+        self.basis = [8359856.1, 39975530.8, 1776892396, 0.0]
         # addition of these
         self.benchmark = {
-            "Traffic Monitor": [529985.71, 2404326.7, 271203379, 0.0, 1],
-            "Firewall": [529985.71, 2404326.7, 271203379, 0.0, 1],
-            "NAT": [529985.71, 2404326.7, 271203379, 0.0, 1],
-            "Load Balancer": [529985.71, 2404326.7, 271203379, 0.0, 1],
-            "Cache": [529985.71, 2404326.7, 271203379, 0.0, 1],
-            "Intrusion Detection": [529985.71, 2404326.7, 271203379, 0.0, 1],
-            "Video Transcoder": [529985.71, 2404326.7, 271203379, 0.0, 1],
-            "WAN Optimizer": [529985.71, 2404326.7, 271203379, 0.0, 1],
-            "Mqtt Broker": [529985.71, 2404326.7, 271203379, 0.0, 1]
+            "Traffic Monitor": [529985.71, 2404326.7, 271203379, 0.0],
+            "Firewall": [529985.71, 2404326.7, 271203379, 0.0],
+            "NAT": [529985.71, 2404326.7, 271203379, 0.0],
+            "Cache": [529985.71, 2404326.7, 271203379, 0.0],
+            "Intrusion Detection": [529985.71, 2404326.7, 271203379, 0.0],
+            "Video Transcoder": [529985.71, 2404326.7, 271203379, 0.0],
+            "WAN Optimizer": [529985.71, 2404326.7, 271203379, 0.0],
+            "Mqtt Broker": [529985.71, 2404326.7, 271203379, 0.0],
+            "Producer": [529985.71, 2404326.7, 271203379, 0.0],
+            "Receiver": [529985.71, 2404326.7, 271203379, 0.0]
         }
 
     """
         然后输入的workload就会经过这里变成result的一个向量
     """
     def aggregate(self):
-        result = np.zeros((1, 5), dtype=int)
+        result = np.array([8359856.1, 39975530.8, 1776892396, 0.60])
         for pod in self.pods:
             if pod.cnf_type in self.benchmark:
                 result += np.array(self.benchmark[pod.cnf_type])

@@ -22,14 +22,15 @@ pods:
     mem_resource: 2048
     band_resource: 200
     setup_time: 30
-    cnt_type:
+    cnf_type: "Load Balancer"
+    data_amount: 10  # 10G
   - name: "Pod_B"
     cpu_resource: 2
     mem_resource: 2048
     band_resource: 200
     setup_time: 50
-    cnt_type: "Load Balancer"
-
+    cnf_type: "Load Balancer"
+    data_amount: 10  # 10G
 dependencies:
   Pod_B: ["Pod_A"]
 

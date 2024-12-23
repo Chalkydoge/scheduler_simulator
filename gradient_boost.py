@@ -142,7 +142,7 @@ def calculate_degradation(ypred):
     df = data[replica_num == 1]
     baseline_transfer = (df['transfer'].mean())
     # 计算每个 replica_num 的 transfer 相对于基准值的比值
-    degradation_ratios = ypred / 6.496 # baseline_transfer
+    degradation_ratios = ypred / baseline_transfer
     return degradation_ratios
 
 

@@ -1,4 +1,6 @@
+import numpy as np
 from flask import Flask, render_template, jsonify, request
+from gradient_boost import GradientBoostModel, calculate_degradation
 from schedule import SchedulerService
 import yaml
 import networkx as nx
@@ -86,5 +88,16 @@ def get_graph():
     return jsonify(graph_json)
 
 
+@app.route('/predict', methods=['POST'])
+def predict():
+    data = request.get_json()  # 获取输入数据
+    features = np.array(data['features']).reshape(1, -1)  # 转换为 numpy 数组并调整形状
+    gb_model = GradientBoostModel()
+    gb_model.load_model(gb_model.model_transfer_path, gb_model.model_bitrate_path)
+    prediction = gb_model.predict(features)  # 模型预测
+    ratio = calculate_degradation(prediction[0].item())
+    return jsonify({'prediction': ratio})  # 返回预测结果
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

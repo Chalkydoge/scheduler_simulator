@@ -9,3 +9,5 @@ data/
 *.jpg
 # 忽略所有的 joblib文件
 *.joblib
+# 忽略所有的 ckpt 文件
+ckpt/

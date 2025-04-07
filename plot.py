@@ -226,5 +226,60 @@ def draw_new_scatter():
     plt.savefig('scatter_plots.png')
 
 
+def draw_cnf_latency_default():
+    # 数据
+    # data = [23.69,24.11,23.56,22.81,19.84,26.61,23.71,20.52,20.43]
+    # data = [47.34, 54.81, 53.17, 57.48, 56.49, 51.48, 50.20, 51.75, 51.75, 56.45, 54.81]
+    # data = [21.90, 20.96, 20.45, 19.93, 20.05, 21.45, 26.06, 19.87,20.68,18.77]
+    # data = [45.59, 43.55, 45.47, 42.74, 44.18, 43.55, 42.74, 45.59, 45.47]
+    # data = [45.54, 45.54, 51.77, 44.14, 46.21, 50.45, 49.70, 48.61, 50.62, 46.82]
+    
+    # DACS 2CNF
+    # data = [45.85,38.05,41.70,46.86,43.22,44.21,42.08,40.12,42.23,51.55,48.28, 42.64]
+
+    # DACS 7CNF
+    # data = [30.84,43.67,49.12,33.41,39.51,38.89,40.62,48.37,37.37,44.89,45.57,40.21]
+
+    # NETMARKS 2CNF
+    # data = [61.10,44.63,32.34,46.11,31.77,55.63,57.11,35.38,48.61,39.26,58.85,55.94]
+    
+    # NETMARKS 6CNF
+    # data = [63.28,40.67,43.20,57.59,48.31,47.65,48.33,59.27,30.77,53.59,45.06,51.19]
+
+    # KCS 6CNF
+    # data = [45.59,43.55,45.47,42.74,44.18]
+
+    # Ours 6CNF
+    # data = [43.38,57.12,42.41,42.41,48.78]
+
+    # Ours 2CNF
+    data = [45.54,45.54,51.77,44.14,46.21,50.45,54.69,54.18,49.70,48.61,50.62,46.82]
+
+    # X轴的标签（可以是试验次数）
+    x = range(1, len(data) + 1)
+
+    # 绘制折线图
+    average = np.mean(data)
+
+    plt.plot(x, data, marker='o', linestyle='-', color='b', label='Latency')
+
+    plt.axhline(y=average, color='r', linestyle='--', label=f'Average ({average:.2f} sec)')
+
+    # 添加标题和标签
+    plt.title("E2E Latency(Ours)")
+    plt.xlabel("Rep")
+    plt.ylabel("Latency(sec)")
+
+    # 显示网格
+    plt.grid(True)
+
+    # 显示图例
+    plt.legend()
+
+    # 展示图形
+    plt.savefig("simple_cnf_latency_ours.png")
+
+
 if __name__ == '__main__':
-    draw_new_scatter()
+    # draw_new_scatter()
+    draw_cnf_latency_default()

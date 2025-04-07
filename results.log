@@ -1,0 +1,523 @@
+
+ EXEC  : instructions per nominal CPU cycle
+ IPC   : instructions per CPU cycle
+ FREQ  : relation to nominal CPU frequency='unhalted clock ticks'/'invariant timer ticks' (includes Intel Turbo Boost)
+ AFREQ : relation to nominal CPU frequency while in active state (not in power-saving C state)='unhalted clock ticks'/'invariant timer ticks while in C0-state'  (includes Intel Turbo Boost)
+ L3MISS: L3 (read) cache misses 
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*) 
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ LOCAL : ratio of local memory requests to memory controller in %
+LLCRDMISSLAT: average latency of last level cache miss for reads and prefetches (in ns)
+ L3OCC : L3 occupancy (in KBytes)
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | EXEC | IPC  | FREQ  | AFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |   L3OCC | TEMP
+
+   0    0     0.02   1.00   0.02    0.53      92 K    274 K    0.66    0.41    0.00    0.00      912     44
+   1    0     0.04   1.10   0.04    0.68     188 K    432 K    0.56    0.51    0.00    0.00     2616     43
+   2    0     0.01   0.74   0.01    0.51      47 K    166 K    0.71    0.38    0.00    0.01      168     46
+   3    0     0.01   0.77   0.02    0.53      57 K    192 K    0.70    0.43    0.00    0.01      408     46
+   4    0     0.01   0.66   0.02    0.52      48 K    211 K    0.77    0.41    0.00    0.01      792     45
+   5    0     0.19   1.58   0.12    0.71     298 K   1133 K    0.74    0.45    0.00    0.00      696     42
+   6    0     0.02   0.85   0.03    0.53      78 K    311 K    0.75    0.49    0.00    0.01      696     44
+   7    0     0.10   1.78   0.05    0.69      85 K    305 K    0.72    0.66    0.00    0.00      240     43
+   8    0     0.02   0.78   0.02    0.53      47 K    240 K    0.80    0.40    0.00    0.01     3432     46
+   9    0     0.02   0.93   0.02    0.51      85 K    249 K    0.66    0.37    0.00    0.01     2472     46
+  10    0     0.01   0.62   0.02    0.52      91 K    270 K    0.66    0.35    0.00    0.01      816     45
+  11    0     0.02   0.73   0.02    0.58      83 K    256 K    0.68    0.38    0.00    0.01      744     42
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.04   1.19   0.03    0.61    1205 K   4045 K    0.70    0.46    0.00    0.00    13992     38
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.04   1.19   0.03    0.61    1205 K   4045 K    0.70    0.46    0.00    0.00     N/A      N/A
+
+ Instructions retired: 1142 M ; Active cycles:  958 M ; Time (TSC): 2399 Mticks ; C0 (active,non-halted) core residency: 5.47 %
+
+ C1 core residency: 94.53 %; C3 core residency: 0.00 %; C6 core residency: 0.00 %; C7 core residency: 0.00 %;
+ C0 package residency: 100.00 %; C2 package residency: 0.00 %; C3 package residency: 0.00 %; C6 package residency: 0.00 %; C7 package residency: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00001111111111111111111111111111111111111111111111111111111111111111111111111111│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+ PHYSICAL CORE IPC                 : 2.38 => corresponds to 59.62 % utilization for cores in active state
+ Instructions per nominal CPU cycle: 0.08 => corresponds to 1.98 % core utilization over time interval
+ SMI count: 0
+---------------------------------------------------------------------------------------------------------------
+MEM (GB)->|  READ |  WRITE | LOCAL | CPU energy | DIMM energy | LLCRDMISSLAT (ns) UncFREQ (Ghz)
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.10     0.05  100 %      25.80       8.10          78.45 3.00
+---------------------------------------------------------------------------------------------------------------
+
+ EXEC  : instructions per nominal CPU cycle
+ IPC   : instructions per CPU cycle
+ FREQ  : relation to nominal CPU frequency='unhalted clock ticks'/'invariant timer ticks' (includes Intel Turbo Boost)
+ AFREQ : relation to nominal CPU frequency while in active state (not in power-saving C state)='unhalted clock ticks'/'invariant timer ticks while in C0-state'  (includes Intel Turbo Boost)
+ L3MISS: L3 (read) cache misses 
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*) 
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ LOCAL : ratio of local memory requests to memory controller in %
+LLCRDMISSLAT: average latency of last level cache miss for reads and prefetches (in ns)
+ L3OCC : L3 occupancy (in KBytes)
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | EXEC | IPC  | FREQ  | AFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |   L3OCC | TEMP
+
+   0    0     0.02   0.67   0.03    0.54     106 K    361 K    0.71    0.35    0.00    0.01      912     43
+   1    0     0.02   0.77   0.02    0.56      75 K    288 K    0.74    0.39    0.00    0.01     1920     44
+   2    0     0.02   0.78   0.03    0.51      93 K    320 K    0.71    0.33    0.00    0.01      624     45
+   3    0     58731.38   3206833.52   0.02    0.51      56 K    239 K    0.76    0.33    0.00    0.00      504     47
+   4    0     0.01   0.63   0.02    0.53      42 K    206 K    0.80    0.36    0.00    0.01     1392     45
+   5    0     0.11   1.43   0.07    0.62     248 K    749 K    0.67    0.43    0.00    0.00     1176     41
+   6    0     0.05   1.34   0.04    0.57     237 K    473 K    0.50    0.30    0.00    0.00     1272     43
+   7    0     0.05   1.51   0.03    0.52      89 K    250 K    0.64    0.43    0.00    0.00      744     44
+   8    0     0.02   1.05   0.02    0.53      81 K    249 K    0.67    0.38    0.00    0.00     2952     45
+   9    0     0.01   0.68   0.02    0.57      76 K    292 K    0.74    0.32    0.00    0.01     1776     47
+  10    0     0.02   0.97   0.02    0.51     118 K    289 K    0.59    0.39    0.00    0.01     1080     45
+  11    0     0.02   1.07   0.02    0.55      34 K    176 K    0.80    0.42    0.00    0.00      168     41
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     4894.09   169165.12   0.03    0.55    1260 K   3897 K    0.68    0.37    0.00    0.00    14520     38
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     4894.09   169165.12   0.03    0.55    1260 K   3897 K    0.68    0.37    0.00    0.00     N/A      N/A
+
+ Instructions retired:  140 T ; Active cycles:  832 M ; Time (TSC): 2396 Mticks ; C0 (active,non-halted) core residency: 5.23 %
+
+ C1 core residency: 94.77 %; C3 core residency: 0.00 %; C6 core residency: 0.00 %; C7 core residency: 0.00 %;
+ C0 package residency: 100.00 %; C2 package residency: 0.00 %; C3 package residency: 0.00 %; C6 package residency: 0.00 %; C7 package residency: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00001111111111111111111111111111111111111111111111111111111111111111111111111111│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+ PHYSICAL CORE IPC                 : 338330.23 => corresponds to 8458255.76 % utilization for cores in active state
+ Instructions per nominal CPU cycle: 9788.18 => corresponds to 244704.56 % core utilization over time interval
+ SMI count: 0
+---------------------------------------------------------------------------------------------------------------
+MEM (GB)->|  READ |  WRITE | LOCAL | CPU energy | DIMM energy | LLCRDMISSLAT (ns) UncFREQ (Ghz)
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.11     0.04  100 %      25.45       8.05          79.18 3.00
+---------------------------------------------------------------------------------------------------------------
+
+ EXEC  : instructions per nominal CPU cycle
+ IPC   : instructions per CPU cycle
+ FREQ  : relation to nominal CPU frequency='unhalted clock ticks'/'invariant timer ticks' (includes Intel Turbo Boost)
+ AFREQ : relation to nominal CPU frequency while in active state (not in power-saving C state)='unhalted clock ticks'/'invariant timer ticks while in C0-state'  (includes Intel Turbo Boost)
+ L3MISS: L3 (read) cache misses 
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*) 
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ LOCAL : ratio of local memory requests to memory controller in %
+LLCRDMISSLAT: average latency of last level cache miss for reads and prefetches (in ns)
+ L3OCC : L3 occupancy (in KBytes)
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | EXEC | IPC  | FREQ  | AFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |   L3OCC | TEMP
+
+   0    0     0.05   0.89   0.05    0.70     348 K    703 K    0.50    0.32    0.00    0.01     1320     43
+   1    0     0.04   0.90   0.05    0.77     234 K    539 K    0.57    0.37    0.00    0.01     1728     44
+   2    0     0.05   1.13   0.04    0.53     210 K    461 K    0.54    0.49    0.00    0.00     2136     44
+   3    0     0.00   0.00   0.05    0.80     193 K    470 K    0.59    0.39    inf    inf      312     45
+   4    0     0.29   1.51   0.19    0.96     368 K    884 K    0.58    0.50    0.00    0.00      624     44
+   5    0     0.76   2.33   0.33    0.95     463 K   1092 K    0.58    0.64    0.00    0.00      576     42
+   6    0     0.28   1.61   0.17    0.71    1223 K   2108 K    0.42    0.53    0.00    0.00     2064     43
+   7    0     0.21   1.64   0.13    0.87     403 K    991 K    0.59    0.56    0.00    0.00     1080     44
+   8    0     0.05   1.23   0.04    0.53     203 K    434 K    0.53    0.40    0.00    0.00     1392     44
+   9    0     0.57   2.06   0.28    1.02     790 K   1408 K    0.44    0.60    0.00    0.00      984     45
+  10    0     0.30   1.50   0.20    1.02     363 K    767 K    0.53    0.52    0.00    0.00     2424     44
+  11    0     0.28   1.48   0.19    1.02     342 K    917 K    0.63    0.46    0.00    0.00      672     42
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.24   1.67   0.14    0.88    5145 K     10 M    0.52    0.52    0.00    0.00    15312     37
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.24   1.67   0.14    0.88    5145 K     10 M    0.52    0.52    0.00    0.00     N/A      N/A
+
+ Instructions retired: 6921 M ; Active cycles: 4142 M ; Time (TSC): 2397 Mticks ; C0 (active,non-halted) core residency: 16.31 %
+
+ C1 core residency: 83.69 %; C3 core residency: 0.00 %; C6 core residency: 0.00 %; C7 core residency: 0.00 %;
+ C0 package residency: 100.00 %; C2 package residency: 0.00 %; C3 package residency: 0.00 %; C6 package residency: 0.00 %; C7 package residency: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00000000000001111111111111111111111111111111111111111111111111111111111111111111│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+ PHYSICAL CORE IPC                 : 3.34 => corresponds to 83.54 % utilization for cores in active state
+ Instructions per nominal CPU cycle: 0.48 => corresponds to 12.03 % core utilization over time interval
+ SMI count: 0
+---------------------------------------------------------------------------------------------------------------
+MEM (GB)->|  READ |  WRITE | LOCAL | CPU energy | DIMM energy | LLCRDMISSLAT (ns) UncFREQ (Ghz)
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.56     0.34  100 %      32.29       8.50          79.95 3.00
+---------------------------------------------------------------------------------------------------------------
+
+ EXEC  : instructions per nominal CPU cycle
+ IPC   : instructions per CPU cycle
+ FREQ  : relation to nominal CPU frequency='unhalted clock ticks'/'invariant timer ticks' (includes Intel Turbo Boost)
+ AFREQ : relation to nominal CPU frequency while in active state (not in power-saving C state)='unhalted clock ticks'/'invariant timer ticks while in C0-state'  (includes Intel Turbo Boost)
+ L3MISS: L3 (read) cache misses 
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*) 
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ LOCAL : ratio of local memory requests to memory controller in %
+LLCRDMISSLAT: average latency of last level cache miss for reads and prefetches (in ns)
+ L3OCC : L3 occupancy (in KBytes)
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | EXEC | IPC  | FREQ  | AFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |   L3OCC | TEMP
+
+   0    0     0.01   0.61   0.01    0.51      72 K    213 K    0.66    0.28    0.00    0.01     1080     43
+   1    0     0.01   0.74   0.01    0.50      41 K    130 K    0.68    0.29    0.00    0.01     1464     44
+   2    0     0.01   0.68   0.01    0.50      61 K    188 K    0.68    0.29    0.00    0.01      888     45
+   3    0     0.00   0.00   0.01    0.50      57 K    138 K    0.59    0.37    inf    inf      912     46
+   4    0     0.01   0.64   0.01    0.50      38 K    150 K    0.75    0.33    0.00    0.01      744     44
+   5    0     0.01   0.77   0.01    0.50      21 K    111 K    0.81    0.47    0.00    0.00      312     41
+   6    0     0.10   1.58   0.06    0.56     205 K    615 K    0.67    0.42    0.00    0.00     5472     43
+   7    0     0.01   0.78   0.01    0.50      63 K    179 K    0.65    0.33    0.00    0.01     1416     44
+   8    0     0.01   0.57   0.01    0.50      38 K    158 K    0.76    0.33    0.00    0.01     1704     45
+   9    0     0.00   0.69   0.00    0.50      13 K     33 K    0.60    0.35    0.00    0.01      264     46
+  10    0     0.00   0.60   0.01    0.50      13 K     77 K    0.82    0.29    0.00    0.01      384     44
+  11    0     0.01   0.70   0.01    0.50      55 K    152 K    0.63    0.32    0.00    0.01      984     41
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.01   0.94   0.01    0.52     682 K   2149 K    0.68    0.36    0.00    0.01    15624     39
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.01   0.94   0.01    0.52     682 K   2149 K    0.68    0.36    0.00    0.01     N/A      N/A
+
+ Instructions retired:  397 M ; Active cycles:  420 M ; Time (TSC): 2397 Mticks ; C0 (active,non-halted) core residency: 2.81 %
+
+ C1 core residency: 97.19 %; C3 core residency: 0.00 %; C6 core residency: 0.00 %; C7 core residency: 0.00 %;
+ C0 package residency: 100.00 %; C2 package residency: 0.00 %; C3 package residency: 0.00 %; C6 package residency: 0.00 %; C7 package residency: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00111111111111111111111111111111111111111111111111111111111111111111111111111111│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+ PHYSICAL CORE IPC                 : 1.89 => corresponds to 47.21 % utilization for cores in active state
+ Instructions per nominal CPU cycle: 0.03 => corresponds to 0.69 % core utilization over time interval
+ SMI count: 0
+---------------------------------------------------------------------------------------------------------------
+MEM (GB)->|  READ |  WRITE | LOCAL | CPU energy | DIMM energy | LLCRDMISSLAT (ns) UncFREQ (Ghz)
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.06     0.03  100 %      24.65       8.01          78.42 3.00
+---------------------------------------------------------------------------------------------------------------
+
+ EXEC  : instructions per nominal CPU cycle
+ IPC   : instructions per CPU cycle
+ FREQ  : relation to nominal CPU frequency='unhalted clock ticks'/'invariant timer ticks' (includes Intel Turbo Boost)
+ AFREQ : relation to nominal CPU frequency while in active state (not in power-saving C state)='unhalted clock ticks'/'invariant timer ticks while in C0-state'  (includes Intel Turbo Boost)
+ L3MISS: L3 (read) cache misses 
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*) 
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ LOCAL : ratio of local memory requests to memory controller in %
+LLCRDMISSLAT: average latency of last level cache miss for reads and prefetches (in ns)
+ L3OCC : L3 occupancy (in KBytes)
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | EXEC | IPC  | FREQ  | AFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |   L3OCC | TEMP
+
+   0    0     58711.87   4666673.91   0.01    0.53      93 K    203 K    0.54    0.27    0.00    0.00     1824     43
+   1    0     0.01   0.64   0.01    0.50      50 K    182 K    0.72    0.30    0.00    0.01     1920     45
+   2    0     0.01   0.79   0.01    0.50      53 K    191 K    0.72    0.32    0.00    0.01      840     45
+   3    0     0.00   0.00   0.01    0.50      34 K    121 K    0.72    0.33    inf    inf     1104     46
+   4    0     0.01   0.72   0.01    0.50      28 K    123 K    0.77    0.30    0.00    0.01      936     45
+   5    0     0.01   0.71   0.01    0.50      26 K    113 K    0.77    0.39    0.00    0.01      744     42
+   6    0     0.04   1.59   0.02    0.57     148 K    301 K    0.51    0.29    0.00    0.00     2520     43
+   7    0     0.01   0.77   0.01    0.50      26 K    127 K    0.80    0.45    0.00    0.01     1008     45
+   8    0     0.01   0.62   0.01    0.50      34 K    155 K    0.78    0.36    0.00    0.01     1632     45
+   9    0     0.00   0.78   0.00    0.50      20 K     55 K    0.64    0.39    0.00    0.01      216     46
+  10    0     0.00   0.65   0.01    0.50      32 K    100 K    0.68    0.29    0.00    0.01      648     45
+  11    0     0.02   1.23   0.01    0.50      64 K    156 K    0.59    0.30    0.00    0.00     1704     42
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     4893.08   410696.81   0.01    0.51     612 K   1832 K    0.67    0.33    0.00    0.00    15096     38
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     4893.08   410696.81   0.01    0.51     612 K   1832 K    0.67    0.33    0.00    0.00     N/A      N/A
+
+ Instructions retired:  140 T ; Active cycles:  342 M ; Time (TSC): 2397 Mticks ; C0 (active,non-halted) core residency: 2.32 %
+
+ C1 core residency: 97.68 %; C3 core residency: 0.00 %; C6 core residency: 0.00 %; C7 core residency: 0.00 %;
+ C0 package residency: 100.00 %; C2 package residency: 0.00 %; C3 package residency: 0.00 %; C6 package residency: 0.00 %; C7 package residency: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00111111111111111111111111111111111111111111111111111111111111111111111111111111│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+ PHYSICAL CORE IPC                 : 821393.63 => corresponds to 20534840.70 % utilization for cores in active state
+ Instructions per nominal CPU cycle: 9786.17 => corresponds to 244654.16 % core utilization over time interval
+ SMI count: 0
+---------------------------------------------------------------------------------------------------------------
+MEM (GB)->|  READ |  WRITE | LOCAL | CPU energy | DIMM energy | LLCRDMISSLAT (ns) UncFREQ (Ghz)
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.06     0.02  100 %      24.57       8.04          78.16 3.00
+---------------------------------------------------------------------------------------------------------------
+
+ EXEC  : instructions per nominal CPU cycle
+ IPC   : instructions per CPU cycle
+ FREQ  : relation to nominal CPU frequency='unhalted clock ticks'/'invariant timer ticks' (includes Intel Turbo Boost)
+ AFREQ : relation to nominal CPU frequency while in active state (not in power-saving C state)='unhalted clock ticks'/'invariant timer ticks while in C0-state'  (includes Intel Turbo Boost)
+ L3MISS: L3 (read) cache misses 
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*) 
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ LOCAL : ratio of local memory requests to memory controller in %
+LLCRDMISSLAT: average latency of last level cache miss for reads and prefetches (in ns)
+ L3OCC : L3 occupancy (in KBytes)
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | EXEC | IPC  | FREQ  | AFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |   L3OCC | TEMP
+
+   0    0     0.00   0.00   0.01    0.51      70 K    176 K    0.60    0.33    inf    inf     1320     45
+   1    0     0.02   1.16   0.02    0.51      66 K    185 K    0.64    0.57    0.00    0.00     2568     44
+   2    0     0.01   0.68   0.02    0.52      45 K    181 K    0.75    0.38    0.00    0.01      288     46
+   3    0     0.00   0.00   0.02    0.58      80 K    236 K    0.66    0.36    inf    inf     1752     46
+   4    0     0.01   0.76   0.01    0.55      42 K    179 K    0.76    0.37    0.00    0.01     1032     44
+   5    0     0.01   0.69   0.01    0.52      63 K    193 K    0.67    0.35    0.00    0.01     1080     43
+   6    0     0.02   1.03   0.02    0.51     201 K    370 K    0.46    0.26    0.00    0.01     2280     45
+   7    0     0.01   0.80   0.02    0.52      86 K    236 K    0.63    0.35    0.00    0.01      864     44
+   8    0     0.01   0.76   0.02    0.52      64 K    197 K    0.67    0.39    0.00    0.01     1584     45
+   9    0     0.03   1.08   0.03    0.67     113 K    268 K    0.58    0.59    0.00    0.00     1152     47
+  10    0     0.01   0.73   0.02    0.55      75 K    234 K    0.68    0.35    0.00    0.01      648     45
+  11    0     0.01   0.85   0.01    0.52      27 K    140 K    0.80    0.47    0.00    0.01      480     43
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.01   0.75   0.02    0.55     939 K   2600 K    0.64    0.41    0.00    0.01    15048     39
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.01   0.75   0.02    0.55     939 K   2600 K    0.64    0.41    0.00    0.01     N/A      N/A
+
+ Instructions retired:  365 M ; Active cycles:  485 M ; Time (TSC): 2397 Mticks ; C0 (active,non-halted) core residency: 3.10 %
+
+ C1 core residency: 96.90 %; C3 core residency: 0.00 %; C6 core residency: 0.00 %; C7 core residency: 0.00 %;
+ C0 package residency: 100.00 %; C2 package residency: 0.00 %; C3 package residency: 0.00 %; C6 package residency: 0.00 %; C7 package residency: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00111111111111111111111111111111111111111111111111111111111111111111111111111111│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+ PHYSICAL CORE IPC                 : 1.50 => corresponds to 37.62 % utilization for cores in active state
+ Instructions per nominal CPU cycle: 0.03 => corresponds to 0.64 % core utilization over time interval
+ SMI count: 0
+---------------------------------------------------------------------------------------------------------------
+MEM (GB)->|  READ |  WRITE | LOCAL | CPU energy | DIMM energy | LLCRDMISSLAT (ns) UncFREQ (Ghz)
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.08     0.03  100 %      24.89       8.06          78.04 3.00
+---------------------------------------------------------------------------------------------------------------
+
+ EXEC  : instructions per nominal CPU cycle
+ IPC   : instructions per CPU cycle
+ FREQ  : relation to nominal CPU frequency='unhalted clock ticks'/'invariant timer ticks' (includes Intel Turbo Boost)
+ AFREQ : relation to nominal CPU frequency while in active state (not in power-saving C state)='unhalted clock ticks'/'invariant timer ticks while in C0-state'  (includes Intel Turbo Boost)
+ L3MISS: L3 (read) cache misses 
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*) 
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ LOCAL : ratio of local memory requests to memory controller in %
+LLCRDMISSLAT: average latency of last level cache miss for reads and prefetches (in ns)
+ L3OCC : L3 occupancy (in KBytes)
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | EXEC | IPC  | FREQ  | AFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |   L3OCC | TEMP
+
+   0    0     0.00   0.00   0.07    0.91     426 K    679 K    0.37    0.41    11.20    17.83      456     45
+   1    0     0.28   1.30   0.22    1.03    1124 K   1943 K    0.42    0.51    0.00    0.00      456     44
+   2    0     0.04   0.86   0.05    0.71     259 K    497 K    0.48    0.52    0.00    0.00      624     45
+   3    0     0.00   0.00   0.07    0.91     280 K    564 K    0.50    0.43    inf    inf      744     46
+   4    0     0.08   1.04   0.08    0.85     314 K    470 K    0.33    0.49    0.00    0.00      240     45
+   5    0     0.05   0.78   0.06    0.80     297 K    489 K    0.39    0.50    0.00    0.00     1104     41
+   6    0     0.05   0.78   0.06    0.87     455 K    637 K    0.29    0.38    0.00    0.01      360     45
+   7    0     0.07   1.14   0.06    0.75     259 K    473 K    0.45    0.60    0.00    0.00      408     44
+   8    0     0.05   0.97   0.05    0.75     277 K    413 K    0.33    0.45    0.00    0.00      408     45
+   9    0     0.08   1.03   0.08    0.90     409 K    761 K    0.46    0.43    0.00    0.00     1128     46
+  10    0     0.05   0.75   0.07    0.88     450 K    647 K    0.30    0.39    0.00    0.01      240     45
+  11    0     0.18   1.46   0.12    0.69     925 K   1396 K    0.34    0.38    0.00    0.00     9768     41
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.08   0.95   0.08    0.85    5483 K   8974 K    0.39    0.46    0.00    0.00    15936     39
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.08   0.95   0.08    0.85    5483 K   8974 K    0.39    0.46    0.00    0.00     N/A      N/A
+
+ Instructions retired: 2224 M ; Active cycles: 2354 M ; Time (TSC): 2397 Mticks ; C0 (active,non-halted) core residency: 9.64 %
+
+ C1 core residency: 90.36 %; C3 core residency: 0.00 %; C6 core residency: 0.00 %; C7 core residency: 0.00 %;
+ C0 package residency: 100.00 %; C2 package residency: 0.00 %; C3 package residency: 0.00 %; C6 package residency: 0.00 %; C7 package residency: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00000000111111111111111111111111111111111111111111111111111111111111111111111111│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+ PHYSICAL CORE IPC                 : 1.89 => corresponds to 47.25 % utilization for cores in active state
+ Instructions per nominal CPU cycle: 0.15 => corresponds to 3.87 % core utilization over time interval
+ SMI count: 0
+---------------------------------------------------------------------------------------------------------------
+MEM (GB)->|  READ |  WRITE | LOCAL | CPU energy | DIMM energy | LLCRDMISSLAT (ns) UncFREQ (Ghz)
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.58     0.20  100 %      28.08       8.39          78.76 3.00
+---------------------------------------------------------------------------------------------------------------
+
+ EXEC  : instructions per nominal CPU cycle
+ IPC   : instructions per CPU cycle
+ FREQ  : relation to nominal CPU frequency='unhalted clock ticks'/'invariant timer ticks' (includes Intel Turbo Boost)
+ AFREQ : relation to nominal CPU frequency while in active state (not in power-saving C state)='unhalted clock ticks'/'invariant timer ticks while in C0-state'  (includes Intel Turbo Boost)
+ L3MISS: L3 (read) cache misses 
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*) 
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ LOCAL : ratio of local memory requests to memory controller in %
+LLCRDMISSLAT: average latency of last level cache miss for reads and prefetches (in ns)
+ L3OCC : L3 occupancy (in KBytes)
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | EXEC | IPC  | FREQ  | AFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |   L3OCC | TEMP
+
+   0    0     0.00   0.00   0.01    0.50      24 K    120 K    0.80    0.31    inf    inf     1152     44
+   1    0     0.01   0.75   0.01    0.52      34 K    114 K    0.70    0.34    0.00    0.01      720     44
+   2    0     0.01   0.74   0.02    0.55      53 K    203 K    0.74    0.34    0.00    0.01      912     45
+   3    0     0.00   0.00   0.02    0.56      42 K    200 K    0.79    0.40    inf    inf     2496     47
+   4    0     0.01   0.74   0.01    0.66      32 K    148 K    0.78    0.42    0.00    0.01     1032     45
+   5    0     0.01   0.63   0.01    0.50      47 K    146 K    0.68    0.33    0.00    0.01     2424     42
+   6    0     0.01   0.72   0.01    0.50      39 K    141 K    0.72    0.33    0.00    0.01      744     44
+   7    0     0.02   1.07   0.01    0.54      67 K    179 K    0.62    0.31    0.00    0.00      984     44
+   8    0     0.01   0.78   0.01    0.55      49 K    136 K    0.63    0.34    0.00    0.01     2376     45
+   9    0     0.01   0.65   0.01    0.52      50 K    161 K    0.69    0.28    0.00    0.01     1560     47
+  10    0     0.01   0.75   0.01    0.56      26 K    123 K    0.79    0.42    0.00    0.01      528     45
+  11    0     0.01   0.78   0.01    0.50      84 K    152 K    0.45    0.34    0.00    0.01      600     42
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.01   0.63   0.01    0.54     552 K   1828 K    0.70    0.35    0.00    0.01    15528     39
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.01   0.63   0.01    0.54     552 K   1828 K    0.70    0.35    0.00    0.01     N/A      N/A
+
+ Instructions retired:  216 M ; Active cycles:  342 M ; Time (TSC): 2397 Mticks ; C0 (active,non-halted) core residency: 2.21 %
+
+ C1 core residency: 97.79 %; C3 core residency: 0.00 %; C6 core residency: 0.00 %; C7 core residency: 0.00 %;
+ C0 package residency: 100.00 %; C2 package residency: 0.00 %; C3 package residency: 0.00 %; C6 package residency: 0.00 %; C7 package residency: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00111111111111111111111111111111111111111111111111111111111111111111111111111111│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+ PHYSICAL CORE IPC                 : 1.27 => corresponds to 31.63 % utilization for cores in active state
+ Instructions per nominal CPU cycle: 0.02 => corresponds to 0.38 % core utilization over time interval
+ SMI count: 0
+---------------------------------------------------------------------------------------------------------------
+MEM (GB)->|  READ |  WRITE | LOCAL | CPU energy | DIMM energy | LLCRDMISSLAT (ns) UncFREQ (Ghz)
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.05     0.03  100 %      24.72       8.01          77.94 3.00
+---------------------------------------------------------------------------------------------------------------
+
+ EXEC  : instructions per nominal CPU cycle
+ IPC   : instructions per CPU cycle
+ FREQ  : relation to nominal CPU frequency='unhalted clock ticks'/'invariant timer ticks' (includes Intel Turbo Boost)
+ AFREQ : relation to nominal CPU frequency while in active state (not in power-saving C state)='unhalted clock ticks'/'invariant timer ticks while in C0-state'  (includes Intel Turbo Boost)
+ L3MISS: L3 (read) cache misses 
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*) 
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ LOCAL : ratio of local memory requests to memory controller in %
+LLCRDMISSLAT: average latency of last level cache miss for reads and prefetches (in ns)
+ L3OCC : L3 occupancy (in KBytes)
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | EXEC | IPC  | FREQ  | AFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |   L3OCC | TEMP
+
+   0    0     0.00   0.00   0.06    0.76     100 K    500 K    0.80    0.47    inf    inf     3720     45
+   1    0     0.01   0.89   0.01    0.50      29 K     92 K    0.68    0.34    0.00    0.01      456     45
+   2    0     0.02   1.16   0.02    0.50      68 K    191 K    0.64    0.35    0.00    0.00      552     44
+   3    0     0.00   0.00   0.01    0.50      64 K    188 K    0.66    0.33    inf    inf     1464     46
+   4    0     0.01   0.95   0.01    0.50      35 K     94 K    0.62    0.33    0.00    0.01      864     45
+   5    0     0.02   1.18   0.01    0.52      67 K    159 K    0.58    0.29    0.00    0.00      984     42
+   6    0     0.01   0.79   0.01    0.54      44 K    142 K    0.69    0.33    0.00    0.01     1560     45
+   7    0     0.01   0.92   0.01    0.50      39 K    104 K    0.62    0.32    0.00    0.01      792     45
+   8    0     0.01   0.93   0.01    0.50      57 K    155 K    0.63    0.30    0.00    0.01      912     44
+   9    0     0.01   0.74   0.01    0.50      57 K    166 K    0.65    0.31    0.00    0.01     1056     46
+  10    0     0.01   0.72   0.01    0.50      24 K    107 K    0.77    0.37    0.00    0.01      696     45
+  11    0     0.10   1.55   0.06    0.60     241 K    669 K    0.64    0.43    0.00    0.00     2568     42
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.02   0.82   0.02    0.58     831 K   2571 K    0.68    0.39    0.00    0.01    15624     39
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.02   0.82   0.02    0.58     831 K   2571 K    0.68    0.39    0.00    0.01     N/A      N/A
+
+ Instructions retired:  461 M ; Active cycles:  564 M ; Time (TSC): 2397 Mticks ; C0 (active,non-halted) core residency: 3.40 %
+
+ C1 core residency: 96.60 %; C3 core residency: 0.00 %; C6 core residency: 0.00 %; C7 core residency: 0.00 %;
+ C0 package residency: 100.00 %; C2 package residency: 0.00 %; C3 package residency: 0.00 %; C6 package residency: 0.00 %; C7 package residency: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00011111111111111111111111111111111111111111111111111111111111111111111111111111│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+ PHYSICAL CORE IPC                 : 1.63 => corresponds to 40.83 % utilization for cores in active state
+ Instructions per nominal CPU cycle: 0.03 => corresponds to 0.80 % core utilization over time interval
+ SMI count: 0
+---------------------------------------------------------------------------------------------------------------
+MEM (GB)->|  READ |  WRITE | LOCAL | CPU energy | DIMM energy | LLCRDMISSLAT (ns) UncFREQ (Ghz)
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.08     0.03  100 %      24.91       7.99          78.69 3.00
+---------------------------------------------------------------------------------------------------------------
+DEBUG: caught signal to continue execution.

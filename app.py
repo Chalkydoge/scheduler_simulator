@@ -98,6 +98,19 @@ def predict():
     ratio = calculate_degradation(prediction[0].item())
     return jsonify({'prediction': ratio})  # 返回预测结果
 
+@app.route('/predict_nf', methods=['POST'])
+def predict_nf():
+    data = request.get_json()
+
+    target_nf = data['target_nf']
+    already_scheduled_nf = data['has_nf']
+
+    features = synthesize(already_scheduled_nf)
+    gb_model = GradientBoostModel()
+    gb_model.load_model(gb_model.model_transfer_path)
+    prediction = gb_model.predict(features)
+
+    return jsonify({'prediction': prediction})
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, host='0.0.0.0', port=5001)
